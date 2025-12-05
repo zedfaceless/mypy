@@ -38,14 +38,15 @@ class NoteController:
     def get_notes(self):
         keyword = request.args.get('search')
         if keyword:
-            notes = self.model.search(keyword)
+            notes = self.model.search(keyword)  # make sure search exists in NoteModel
         else:
-            notes = self.model.getall()
+            notes = self.model.get_all()  # ✅ use the correct method name
         return self.view.render_list(notes)
-    
+
     def get_note(self, note_id):
-        note = self.model.getbyid(note_id)
+        note = self.model.get_by_id(note_id)  # ✅ match NoteModel
         return self.view.render_one(note)
+
     
     def create_note(self):
         data = request.get_json()

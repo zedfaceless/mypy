@@ -1,5 +1,12 @@
+
 from flask import Flask
 from controllers.note_controller import NoteController
+from pymongo import MongoClient
+from config import MONGO_URI
+
+client = MongoClient(MONGO_URI)
+db = client.get_default_database()    # points to 'mypy' database
+notes_collection = db["note_user"]   # points to your collection
 
 class App:
     """ Main application class to initialize Flask app and controllers + MVC structure """

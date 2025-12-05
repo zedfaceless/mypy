@@ -1,49 +1,38 @@
 from datetime import datetime
+from bson.objectid import ObjectId
 
 class Note:
-    """ Represents a note with a title, content, and timestamp. """
+    """Represents a note with a title, content, and timestamp."""
     def __init__(self, note_id, title, content, timestamp=None):
         self.id = note_id
         self.title = title
         self.content = content
         self.timestamp = timestamp if timestamp else datetime.now()
-        
+
+
 class NoteModel:
-    """ Model for managing notes. """
-    def __init__(self):
-        self.notes = {}
-        self.next_id = 1
-        
+    def __init__(self, collection):
+        self.collection = collection
+
+    def get_all(self):
+        return list(self.collection.find())
+
+    def get_by_id(self, note_id):
+        return self.collection.find_one({"_id": ObjectId(note_id)})
+
     def create(self, title, content):
-        """ Create a new note. """
-        note = Note(self.next_id, title, content)
-        self.notes[self.next_id] = note
-        self.next_id += 1
-        return note
-    
-    def getall(self):
-        """ Get all notes. """
-        return list(self.notes.values())
-    
-    def getbyid(self, note_id):
-        """ Get a note by its ID. """
-        return self.notes.get(note_id)
-    
-    def search(self, keyword):
-        """ Search notes by title or content. """
-        results = [ note for note in self.notes.values()
-                    if keyword.lower() in note.title.lower() or keyword.lower() in note.content.lower() ]
-    
+        result = self.collection.insert_one({"title": title, "content": content})
+        return self.get_by_id(result.inserted_id)
+
     def delete(self, note_id):
-        return self.notes.pop(note_id, None)
+        result = self.collection.delete_one({"_id": ObjectId(note_id)})
+        return result.deleted_count > 0
 
-class NoteModel:
-    
-    def __init__(self):
-        self.notes = []
-
-    def get_all_notes(self):
-        return self.notes
-
-    def add_note(self, note):
-        self.notes.append(note)
+    def search(self, keyword):
+        results = list(self.collection.find({
+            "$or": [
+                {"title": {"$regex": keyword, "$options": "i"}},
+                {"content": {"$regex": keyword, "$options": "i"}}
+            ]
+        }))
+        return results
