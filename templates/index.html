@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyPy Notes</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <h1>📒 My Notes</h1>
+
+    <a href="/notes/add" class="btn">➕ Add Note</a>
+
+    <form method="GET" action="/notes">
+      <input type="text" name="search" placeholder="Search notes..." />
+    </form>
+
+    <div class="notes-container">
+      {% for note in notes %}
+      <div class="note-card">
+        <h2>{{ note.title }}</h2>
+        <p>{{ note.content }}</p>
+
+        <form method="POST" action="/notes/delete/{{ note._id }}">
+          <button class="delete-btn">Delete</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

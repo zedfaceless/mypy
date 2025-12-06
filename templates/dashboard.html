@@ -1,0 +1,47 @@
+{% extends "layout.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<h1 class="text-3xl mb-4">Dashboard</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="col-span-2">
+    <h3 class="text-xl mb-2">Your Recent Notes</h3>
+    {% if notes %}
+    <div class="space-y-3">
+      {% for note in notes %}
+      <div class="p-4 bg-white dark:bg-gray-800 rounded shadow">
+        <a
+          href="{{ url_for('notes_detail', note_id=note._id) }}"
+          class="text-lg font-semibold"
+          >{{ note.title }}</a
+        >
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          {{ note.content|truncate(150) }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>
+      No notes yet —
+      <a href="{{ url_for('notes_add') }}" class="text-blue-600"
+        >Add your first note</a
+      >.
+    </p>
+    {% endif %}
+  </div>
+
+  <div>
+    <h3 class="text-xl mb-2">Quick Actions</h3>
+    <div class="space-y-2">
+      <a
+        href="{{ url_for('notes_add') }}"
+        class="block p-3 bg-blue-600 text-white rounded"
+        >Add Note</a
+      >
+      <a href="{{ url_for('notes_list') }}" class="block p-3 border rounded"
+        >View All Notes</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,26 +1,12 @@
-from flask import jsonify
+# views/note_view.py
+from flask import render_template, jsonify
 
 class NoteView:
-    
-    def to_dict(self, note):
-        """ Format reponses for note resources """
-        return {
-            'id': note.id,
-            'title': note.title,
-            'content': note.content,
-            'timestamp': note.timestamp.isoformat()
-        }
-    
     def render_list(self, notes):
-        """ Render a list of notes """
-        return jsonify([self.to_dict(note) for note in notes])
-    
+        return render_template("notes_list.html", notes=notes)
+
     def render_one(self, note):
-        """ Render a one note """
-        if note:
-            return jsonify(self.to_dict(note))
-        return jsonify({'message': 'Note not found'}), 404
-    
+        return render_template("note_detail.html", note=note)
+
     def render_message(self, message, status=200):
-        """ Render a message response """
-        return jsonify({'message': message}), status
+        return jsonify({"message": message}), status

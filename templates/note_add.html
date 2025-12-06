@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block title %}Add Note{% endblock %} {% block
+content %}
+<h1 class="text-2xl mb-4">Add Note</h1>
+<form method="post">
+  <label class="block mb-2"
+    >Title
+    <input name="title" class="w-full p-2 border rounded" required />
+  </label>
+  <label class="block mb-4"
+    >Content
+    <textarea
+      name="content"
+      rows="8"
+      class="w-full p-2 border rounded"
+      required
+    ></textarea>
+  </label>
+  <div>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+    <a class="ml-2 text-gray-600" href="{{ url_for('notes_list') }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

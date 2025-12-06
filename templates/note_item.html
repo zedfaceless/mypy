@@ -1,0 +1,12 @@
+<div class="note-card">
+  <h3>{{ note.title }}</h3>
+  <p>{{ note.content }}</p>
+
+  <small>Created: {{ note.timestamp }}</small>
+
+  <br /><br />
+
+  <button onclick="deleteNote('{{ note._id }}')" class="delete-btn">
+    Delete
+  </button>
+</div>
