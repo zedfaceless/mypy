@@ -25,7 +25,7 @@ def create_app():
     return app
 
 # Gunicorn WSGI entrypoint
-application = create_app()
+app = create_app()  # Renamed from 'application' to 'app'
 
 if __name__ == "__main__":
-    application.run(debug=True)
+    app.run(debug=True)
